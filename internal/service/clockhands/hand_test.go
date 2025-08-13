@@ -13,7 +13,7 @@ func TestHandInRadias(t *testing.T) {
 
 		testCases := []struct {
 			now    time.Time
-			radius float32
+			radius float64
 		}{
 			{
 				now:    testhelpers.SetTime(t, 1, 0, 0),
@@ -44,7 +44,7 @@ func TestHandInRadias(t *testing.T) {
 			got := secondHand.handInRadius(testCase.now)
 			want := testCase.radius
 
-			testhelpers.RoughlyEqualFloat32(t, got, want)
+			testhelpers.RoughlyEqualFloat64(t, got, want)
 		}
 
 	})
@@ -53,7 +53,7 @@ func TestHandInRadias(t *testing.T) {
 
 		testCases := []struct {
 			now    time.Time
-			radius float32
+			radius float64
 		}{
 			{
 				now:    testhelpers.SetTime(t, 1, 0, 0),
@@ -84,7 +84,7 @@ func TestHandInRadias(t *testing.T) {
 			got := secondHand.handInRadius(testCase.now)
 			want := testCase.radius
 
-			testhelpers.RoughlyEqualFloat32(t, got, want)
+			testhelpers.RoughlyEqualFloat64(t, got, want)
 		}
 
 	})
@@ -93,7 +93,7 @@ func TestHandInRadias(t *testing.T) {
 
 		testCases := []struct {
 			now    time.Time
-			radius float32
+			radius float64
 		}{
 			{
 				now:    testhelpers.SetTime(t, 0, 0, 0),
@@ -124,7 +124,7 @@ func TestHandInRadias(t *testing.T) {
 			got := secondHand.handInRadius(testCase.now)
 			want := testCase.radius
 
-			testhelpers.RoughlyEqualFloat32(t, got, want)
+			testhelpers.RoughlyEqualFloat64(t, got, want)
 		}
 
 	})
@@ -152,4 +152,59 @@ func TestDurationSinceStartOfDate(t *testing.T) {
 
 		testhelpers.AssertEqual(t, got, want)
 	}
+}
+
+func TestHandPoint(t *testing.T) {
+	t.Run("60 second per round", func(t *testing.T) {
+
+		testCases := []struct {
+			now   time.Time
+			point Point
+		}{
+			{
+				now: testhelpers.SetTime(t, 1, 0, 0),
+				point: Point{
+					X: 0,
+					Y: -10,
+				},
+			},
+
+			{
+				now: testhelpers.SetTime(t, 6, 4, 15),
+				point: Point{
+					X: 10,
+					Y: 0,
+				},
+			},
+			{
+				now: testhelpers.SetTime(t, 10, 56, 30),
+				point: Point{
+					X: 0,
+					Y: 10,
+				},
+			},
+
+			{
+				now: testhelpers.SetTime(t, 23, 59, 45),
+				point: Point{
+					X: -10,
+					Y: 0,
+				},
+			},
+		}
+
+		for _, testCase := range testCases {
+			secondHand := hand{
+				length:       10,
+				timePerRound: 60 * time.Second,
+			}
+
+			got := secondHand.handPoint(testCase.now)
+			want := testCase.point
+
+			testhelpers.RoughlyEqualFloat32(t, got.X, want.X)
+			testhelpers.RoughlyEqualFloat32(t, got.Y, want.Y)
+		}
+
+	})
 }

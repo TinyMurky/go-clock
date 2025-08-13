@@ -30,6 +30,18 @@ func RoughlyEqualFloat32(t testing.TB, got, want float32) {
 	}
 }
 
+// RoughlyEqualFloat64 will pass if the different between
+// got and want is less than 1e-7
+func RoughlyEqualFloat64(t testing.TB, got, want float64) {
+	t.Helper()
+
+	const threshold = 1e-7
+
+	if math.Abs(float64(got-want)) > threshold {
+		t.Errorf("expect \"%v\", got \"%v\"", want, got)
+	}
+}
+
 // AssertEqual use reflect equal to determine equalTestHand
 func AssertEqual[T any](t testing.TB, got, want T) {
 	t.Helper()

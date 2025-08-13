@@ -3,9 +3,9 @@ package config
 
 const (
 	// ScreenWidth is the width of ebitengine windows
-	ScreenWidth = 400
+	ScreenWidth = 300
 	// ScreenHeight is the Height of ebitengine windows
-	ScreenHeight = 400
+	ScreenHeight = 300
 
 	// ClockRadius is the radius of the circle of clock
 	ClockRadius = 150
